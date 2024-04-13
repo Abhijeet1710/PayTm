@@ -27,6 +27,13 @@ const updateUserDetailsBody = zod.object({
 })
 
 
+const webhookBody = zod.object({
+    userId: zod.string(),
+    token: zod.string(),
+    amount: zod.string()
+})
+
+
 const p2pTransferBody = zod.object({
     toUserPhone: zod.string(),
 	fromUserPhone: zod.string(),
@@ -45,5 +52,6 @@ module.exports = {
     signupBody,
     p2pTransferBody,
     walletCreditBody,
-    updateUserDetailsBody
+    updateUserDetailsBody,
+    webhookBody
 }
