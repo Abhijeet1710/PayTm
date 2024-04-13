@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { UserCollection } = require("../../db/db.js");
-const { signinBody, signupBody } = require("../zod-validations/index.js")
+const { signinBody, signupBody } = require("../../zod-validations/index.js")
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { JWT_SECRET } = require("../../config.js");

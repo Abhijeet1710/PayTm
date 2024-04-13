@@ -15,7 +15,14 @@ const signupBody = zod.object({
     phoneNumber: zod.string().regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 'Invalid Phone Number!')
 })
 
+const p2pTransferBody = zod.object({
+    toUserPhone: zod.string(),
+	fromUserPhone: zod.string(),
+    amount: zod.number().min(1000)
+})
+
 module.exports = {
     signinBody,
-    signupBody
+    signupBody,
+    p2pTransferBody
 }

@@ -3,6 +3,7 @@ const express = require('express')
 const healthRouter = require("./routes/health/index.js")
 const userAuthRouter = require("./routes/user-auth/index.js")
 const userRouter = require("./routes/user/index.js")
+const p2pRouter = require("./routes/p2p/index.js")
 const cors = require('cors')
 const { authMiddleware } = require('./auth-middleware/middleware.js')
 
@@ -16,6 +17,8 @@ app.use("/api/v1", userAuthRouter)
 app.use(authMiddleware)
 
 app.use("/api/v1", userRouter)
+
+app.use("/api/v1", p2pRouter)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server up and Running on https://localhost:${process.env.PORT}`);
