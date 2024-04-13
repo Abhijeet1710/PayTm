@@ -1,4 +1,6 @@
 const { Router } = require('express')
+const { mongoose, startSession } = require("mongoose")
+
 const { p2pTransferBody } = require("../../zod-validations/index.js")
 const { UserCollection } = require("../../db/db.js");
 
@@ -18,12 +20,16 @@ router.post("/p2p/transfer", async (req, res) => {
     const toUserPhone = req.body.toUserPhone
     const amountToTransfer = Number(req.body.amount)
 
+    const session = await startSession()
+
     try {
+        session.startTransaction()
         const fromUserDetails = await UserCollection.findOne({
             phoneNumber: fromUserPhone
-        })
+        }).session(session)
          
         if (!fromUserDetails) {
+            await session.endSession()
             return res.status(404).json({
                 message: `User with phone number : ${fromUserPhone} not exists`
             })
@@ -33,12 +39,14 @@ router.post("/p2p/transfer", async (req, res) => {
         // req.userId is the _id field of Logged in User (by token)
 
         if (fromUserDetails._id != req.userId) {
+            await session.endSession()
             return res.status(404).json({
                 message: `Invalid Operation`
             })
         }
 
         if (fromUserDetails.amount < amountToTransfer) {
+            await session.endSession()
             return res.status(404).json({
                 message: `Insufficient balance`
             })
@@ -47,7 +55,9 @@ router.post("/p2p/transfer", async (req, res) => {
         const toUserDetails = await UserCollection.findOne({
             phoneNumber: toUserPhone
         })
+
         if (!toUserDetails) {
+            await session.endSession()
             return res.status(404).json({
                 message: `User with phone number : ${toUserPhone} not exists`
             })
@@ -67,7 +77,7 @@ router.post("/p2p/transfer", async (req, res) => {
                     p2pTransactions: p2pTransferObj
                 }
             } // Update to be applied (e.g., setting a new field)
-        );
+        )
 
         console.log("From updateP2pFromDetails " + JSON.stringify(updateP2pFromDetails));
 
@@ -83,17 +93,23 @@ router.post("/p2p/transfer", async (req, res) => {
                     p2pTransactions: p2pTransferObj
                 }
             } // Update to be applied (e.g., setting a new field)
-        );
+        )
 
         console.log("To updateP2pToDetails " + JSON.stringify(updateP2pToDetails));
 
         if (updateP2pToDetails && updateP2pFromDetails) {
+            await session.commitTransaction()
+            await session.endSession()
+
             return res.json({
                 message: "Amount transfered successfully"
             })
         }
 
     } catch (err) {
+        await session.abortTransaction()
+        await session.endSession()
+
         console.log("Err : " + JSON.stringify(err));
     }
 

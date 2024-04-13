@@ -16,7 +16,7 @@ router.get("/user-details/:userName", async (req, res) => {
         if (userDetails) {
             return res.json({
                 message: "Success",
-                userDetails
+                userDetails: {...userDetails._doc, password: null}
             })
         } else {
             return res.status(404).json({

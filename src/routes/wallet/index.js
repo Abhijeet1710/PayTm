@@ -1,4 +1,6 @@
 const { Router } = require('express')
+const { mongoose, startSession } = require("mongoose")
+
 const { walletCreditBody } = require("../../zod-validations/index.js")
 const { UserCollection } = require("../../db/db.js");
 
@@ -19,12 +21,17 @@ router.post("/wallet/credit", async (req, res) => {
     const amountToCredit = Number(req.body.amount)
     const provider = req.body.provider
 
+    const session = await startSession()
+
     try {
+        session.startTransaction()
         const userDetails = await UserCollection.findOne({
             phoneNumber: fromUserPhone
         })
          
         if (!userDetails) {
+            await session.endSession()
+
             return res.status(404).json({
                 message: `User with phone number : ${fromUserPhone} not exists`
             })
@@ -34,6 +41,8 @@ router.post("/wallet/credit", async (req, res) => {
         // req.userId is the _id field of Logged in User (by token)
 
         if (userDetails._id != req.userId) {
+            await session.endSession()
+
             return res.status(404).json({
                 message: `Invalid Operation`
             })
@@ -51,17 +60,23 @@ router.post("/wallet/credit", async (req, res) => {
                     walletTransactions: walletCreditObj
                 }
             } // Update to be applied (e.g., setting a new field)
-        );
+        ).session(session)
 
         console.log("update wallet Details " + JSON.stringify(updateWalletTrans));
 
         if (updateWalletTrans) {
+            await session.commitTransaction()
+            await session.endSession()
+
             return res.json({
                 message: "Transaction is in Pending status"
             })
         }
 
     } catch (err) {
+        await session.abortTransaction()
+        await session.endSession()
+
         console.log("Err : " + err);
     }
 
