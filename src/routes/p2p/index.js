@@ -22,7 +22,6 @@ router.post("/p2p/transfer", async (req, res) => {
         const fromUserDetails = await UserCollection.findOne({
             phoneNumber: fromUserPhone
         })
-        console.log("From " + JSON.stringify(fromUserDetails));
          
         if (!fromUserDetails) {
             return res.status(404).json({
@@ -48,7 +47,6 @@ router.post("/p2p/transfer", async (req, res) => {
         const toUserDetails = await UserCollection.findOne({
             phoneNumber: toUserPhone
         })
-        console.log("To " + JSON.stringify(toUserDetails));
         if (!toUserDetails) {
             return res.status(404).json({
                 message: `User with phone number : ${toUserPhone} not exists`
@@ -87,7 +85,7 @@ router.post("/p2p/transfer", async (req, res) => {
             } // Update to be applied (e.g., setting a new field)
         );
 
-        console.log("From updateP2pToDetails " + JSON.stringify(updateP2pToDetails));
+        console.log("To updateP2pToDetails " + JSON.stringify(updateP2pToDetails));
 
         if (updateP2pToDetails && updateP2pFromDetails) {
             return res.json({
@@ -96,7 +94,7 @@ router.post("/p2p/transfer", async (req, res) => {
         }
 
     } catch (err) {
-        console.log("Err ; " + JSON.stringify(err));
+        console.log("Err : " + JSON.stringify(err));
     }
 
     res.status(500).json({ msg: "Internal Server Error" })
