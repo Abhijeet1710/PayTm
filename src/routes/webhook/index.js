@@ -23,6 +23,7 @@ router.post("/hdfcWebhook", async (req, res) => {
     if(!success) {
         return res.status(411).json({
             message: "Invalid inputs",
+            errors: error.issues.map((er) => `${er.path} : ${er.message}`)
         })
     }
 
