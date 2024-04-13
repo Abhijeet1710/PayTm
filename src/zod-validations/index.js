@@ -9,11 +9,23 @@ const signinBody = zod.object({
 const signupBody = zod.object({
     userName: zod.string().min(3).max(15),
     email: zod.string().email(),
+    address: zod.string().max(150).optional(),
 	firstName: zod.string(),
 	lastName: zod.string(),
 	password: zod.string().min(6).max(16),
     phoneNumber: zod.string().regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 'Invalid Phone Number!')
 })
+
+const updateUserDetailsBody = zod.object({
+    userName: zod.string().min(3).max(15).optional(),
+    email: zod.string().email().optional(),
+    address: zod.string().max(150).optional(),
+	firstName: zod.string().optional(),
+	lastName: zod.string().optional(),
+	password: zod.string().min(6).max(16).optional(),
+    phoneNumber: zod.string().regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 'Invalid Phone Number!').optional()
+})
+
 
 const p2pTransferBody = zod.object({
     toUserPhone: zod.string(),
@@ -32,5 +44,6 @@ module.exports = {
     signinBody,
     signupBody,
     p2pTransferBody,
-    walletCreditBody
+    walletCreditBody,
+    updateUserDetailsBody
 }

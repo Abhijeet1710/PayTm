@@ -3,7 +3,7 @@ const { UserCollection } = require("../../db/db.js");
 
 const router = Router()
 
-router.get("/user-details/:userName", async (req, res) => {
+router.get("/webhook", async (req, res) => {
     const userName = req.params.userName
     
     try {
