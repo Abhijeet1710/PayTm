@@ -98,12 +98,4 @@ router.post("/signin", async (req, res) => {
 })
 
 
-router.get("/isloggedin", async (req, res) => {
-
-    res.status(200).json({
-        userId: `${req.userId}`,
-        message: `User Is Logged In`
-    })
-})
-
 module.exports = router
