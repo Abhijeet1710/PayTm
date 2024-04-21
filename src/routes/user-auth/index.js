@@ -114,7 +114,7 @@ router.get("/usernameAvailability/:userName", async (req, res) => {
 
     if (user) {
         return res.status(400).json({
-            message: "userName already taken, Pls choose different userName"
+            errors: ["userName already taken, Pls choose different userName"]
         })
     }
 
