@@ -7,11 +7,12 @@ const signinBody = zod.object({
 })
 
 const signupBody = zod.object({
-    userName: zod.string().min(3).max(15),
+    fullName: zod.string(),
     email: zod.string().email(),
-    address: zod.string().max(150).optional(),
-	fullName: zod.string(),
 	password: zod.string().min(6).max(16),
+
+    userName: zod.string().min(3).max(15),
+    address: zod.string().max(150).optional(),	
     phoneNumber: zod.string().regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 'Invalid Phone Number!')
 })
 
