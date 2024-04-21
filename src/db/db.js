@@ -88,17 +88,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    firstName: {
+    fullName: {
         type: String,
         required: true,
         trim: true,
-        maxLength: 50
-    },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true,
-        maxLength: 50
+        maxLength: 150
     },
     address: {
         type: String,
