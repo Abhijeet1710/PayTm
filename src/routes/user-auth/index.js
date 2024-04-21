@@ -99,7 +99,6 @@ router.post("/signin", async (req, res) => {
 
 
 router.get("/usernameAvailability/:userName", async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
 
     const { success, error } = isValidUserName.safeParse(req.params?.userName)
     if (!success) {

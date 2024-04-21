@@ -6,6 +6,8 @@ const signinBody = zod.object({
 	password: zod.string().min(6)
 })
 
+const isValidUserName = zod.string().min(3).max(15)
+
 const signupBody = zod.object({
     fullName: zod.string(),
     email: zod.string().email(),
@@ -15,8 +17,6 @@ const signupBody = zod.object({
     address: zod.string().max(150).optional(),	
     phoneNumber: zod.string().regex(new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 'Invalid Phone Number!')
 })
-
-const isValidUserName = zod.string().min(3).max(15)
 
 const updateUserDetailsBody = zod.object({
     userName: zod.string().min(3).max(15).optional(),
