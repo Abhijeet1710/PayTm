@@ -97,4 +97,22 @@ router.post("/signin", async (req, res) => {
 })
 
 
+router.get("/usernameAvailability/:userName", async (req, res) => {
+
+    const user = await UserCollection.findOne({
+        userName: req.params.userName
+    });
+
+    if (user) {
+        res.status(400).json({
+            message: "userName already taken, Pls choose different userName"
+        })
+    }
+
+    res.status(200).json({
+        message: "Perfect !"
+    })
+})
+
+
 module.exports = router
