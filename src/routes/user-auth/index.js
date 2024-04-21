@@ -71,7 +71,7 @@ router.post("/signin", async (req, res) => {
     }
 
     const user = await UserCollection.findOne({
-        email: req.body.email
+        $or: [{email: req.body.userName}, {userName: req.body.userName}]
     });
 
     if (user) {
@@ -93,7 +93,7 @@ router.post("/signin", async (req, res) => {
     }
 
     res.status(411).json({
-        message: "User not found, Create a account first"
+        errors: ["User not found, Create a account first"]
     })
 })
 
