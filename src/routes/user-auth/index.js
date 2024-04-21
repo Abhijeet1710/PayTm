@@ -4,6 +4,7 @@ const { signinBody, signupBody } = require("../../zod-validations/index.js")
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { JWT_SECRET } = require("../../config.js");
+const { setHeaders } = require('../../utils.js');
 
 const router = Router()
 
@@ -109,6 +110,7 @@ router.get("/usernameAvailability/:userName", async (req, res) => {
         })
     }
 
+    res = setHeaders(res)
     res.status(200).json({
         message: "Perfect !"
     })
