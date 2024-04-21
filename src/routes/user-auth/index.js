@@ -104,7 +104,7 @@ router.get("/usernameAvailability/:userName", async (req, res) => {
     if (!success) {
         return res.status(400).json({
             message: "Invalid inputs",
-            errors: error.issues.map((er) => `${er.path} : ${er.message}`)
+            errors: error.issues.map((er) => `userName : ${er.message}`)
         })
     }
     
