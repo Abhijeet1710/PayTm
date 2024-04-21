@@ -86,13 +86,18 @@ router.post("/signin", async (req, res) => {
                 userId: user._id
             }, JWT_SECRET);
 
-            return res.json({
+            return res.status(200).json({
+                message: "Login Successful!",
                 access_token: token
+            });
+        } else {
+            return res.status(411).json({
+                errors: ["Incorrect password"]
             });
         }
     }
 
-    res.status(411).json({
+    res.status(404).json({
         errors: ["User not found, Create a account first"]
     })
 })
