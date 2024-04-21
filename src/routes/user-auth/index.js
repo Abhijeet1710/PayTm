@@ -99,18 +99,19 @@ router.post("/signin", async (req, res) => {
 
 
 router.get("/usernameAvailability/:userName", async (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
 
     const user = await UserCollection.findOne({
         userName: req.params.userName
     });
 
     if (user) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "userName already taken, Pls choose different userName"
         })
     }
 
-    res = setHeaders(res)
+    
     res.status(200).json({
         message: "Perfect !"
     })
