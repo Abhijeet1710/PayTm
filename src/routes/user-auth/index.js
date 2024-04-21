@@ -24,7 +24,7 @@ router.post("/signup", async (req, res) => {
 
     if (existingUser) {
         return res.status(411).json({
-            message: "Email/userName already taken"
+            errors: ["Email already taken"]
         })
     }
 
@@ -55,7 +55,7 @@ router.post("/signup", async (req, res) => {
     } catch (err) {
         console.log(JSON.stringify(err));
         return res.status(500).json({
-            message: "Internal Server Error"
+            errors: ["Internal Server Error"]
         })
     }
 
