@@ -54,5 +54,6 @@ module.exports = {
     p2pTransferBody,
     walletCreditBody,
     updateUserDetailsBody,
-    webhookBody
+    webhookBody,
+    isValidUserName
 }

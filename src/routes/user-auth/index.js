@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { UserCollection } = require("../../db/db.js");
-const { signinBody, signupBody } = require("../../zod-validations/index.js")
+const { signinBody, signupBody, isValidUserName } = require("../../zod-validations/index.js")
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { JWT_SECRET } = require("../../config.js");
@@ -101,6 +101,14 @@ router.post("/signin", async (req, res) => {
 router.get("/usernameAvailability/:userName", async (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
 
+    const { success, error } = isValidUserName.safeParse(req.params?.userName)
+    if (!success) {
+        return res.status(400).json({
+            message: "Invalid inputs",
+            errors: error.issues.map((er) => `${er.path} : ${er.message}`)
+        })
+    }
+    
     const user = await UserCollection.findOne({
         userName: req.params.userName
     });
