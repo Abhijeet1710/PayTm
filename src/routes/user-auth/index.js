@@ -86,6 +86,8 @@ router.post("/signin", async (req, res) => {
                 userId: user._id
             }, JWT_SECRET);
 
+            delete user.password
+
             return res.status(200).json({
                 message: "Login Successful!",
                 access_token: token,
